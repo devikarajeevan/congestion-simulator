@@ -1,0 +1,23 @@
+.config-panel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.config-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.config-hint {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+  .config-panel {
+    grid-template-columns: 1fr;
+  }
+}

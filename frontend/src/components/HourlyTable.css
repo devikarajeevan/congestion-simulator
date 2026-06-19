@@ -1,0 +1,103 @@
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.hourly-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.hourly-table th {
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.hourly-table td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.hourly-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.hourly-table tbody tr:hover {
+  background: var(--color-bg);
+}
+
+.row-flipped {
+  background: var(--color-flip-bg) !important;
+}
+
+.row-flipped td {
+  border-bottom-color: var(--color-flip-border);
+}
+
+.badge {
+  font-size: 11px;
+  padding: 2px var(--space-2);
+  border-radius: 99px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.badge-toll {
+  background: var(--color-toll-bg);
+  color: var(--color-toll);
+}
+
+.badge-reward {
+  background: var(--color-reward-bg);
+  color: var(--color-reward);
+}
+
+.badge-neutral {
+  background: var(--color-neutral-bg);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.flip-tag {
+  font-size: 11px;
+  color: #92610a;
+  margin-left: var(--space-2);
+  font-weight: 500;
+}
+
+.cell-toll {
+  color: var(--color-toll);
+  font-variant-numeric: tabular-nums;
+}
+
+.cell-reward {
+  color: var(--color-reward);
+  font-variant-numeric: tabular-nums;
+}
+
+.cell-muted {
+  color: var(--color-text-muted);
+}
+
+.cell-changed {
+  font-weight: 500;
+}
+
+.delta-good {
+  color: var(--color-reward);
+  font-variant-numeric: tabular-nums;
+}
+
+.delta-bad {
+  color: var(--color-toll);
+  font-variant-numeric: tabular-nums;
+}

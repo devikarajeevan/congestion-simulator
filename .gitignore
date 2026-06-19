@@ -1,0 +1,38 @@
+# Frontend
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+
+# Backend
+backend/node_modules/
+backend/dist/
+backend/build/
+
+# Environment files
+**/.env
+**/.env.local
+
+# Logs
+**/*.log
+
+# Coverage
+**/coverage/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache
+**/.cache/
+.parcel-cache/
+
+# Temporary
+tmp/
+temp/
+
+# Uploads
+backend/uploads/
