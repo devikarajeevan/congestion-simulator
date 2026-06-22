@@ -16,6 +16,7 @@ const seedData = JSON.parse(fs.readFileSync(seedPath, "utf-8"));
 
 function validateInput(volumes, config) {
   const errors = [];
+  console.log("hi")
 
   if (!Array.isArray(volumes) || volumes.length !== 24) {
     errors.push("volumes must be an array of exactly 24 numbers");
@@ -31,17 +32,20 @@ function validateInput(volumes, config) {
     errors.push("config must be an object");
   } else {
     if (typeof config.capacity !== "number" || config.capacity <= 0) {
-      errors.push("config.capacity must be a positive number");
+      errors.push("Capacity must be a positive number");
     }
     if (typeof config.baseRate !== "number" || config.baseRate <= 0) {
-      errors.push("config.baseRate must be a positive number");
+      console.error("Base Rate validation failed:", config.baseRate);
+      console.log("hi")
+      errors.push("Base Rate must be a positive number");
     }
+    console.error("Validation errors:", errors);
     if (
       typeof config.underThreshold !== "number" ||
       config.underThreshold <= 0 ||
       config.underThreshold >= 1
     ) {
-      errors.push("config.underThreshold must be a number between 0 and 1");
+      errors.push("Under Threshold must be a number between 0 and 1");
     }
   }
 
@@ -64,9 +68,11 @@ app.post("/simulate", (req, res) => {
   const { volumes, config } = req.body;
 
   const errors = validateInput(volumes, config);
+  // console.log("errors:", errors);
   if (errors.length > 0) {
     return res.status(400).json({ errors });
   }
+  // console.log("errors:", errors);
 
   const hourlyResults = calcAllHours(volumes, config);
 
@@ -76,7 +82,9 @@ app.post("/simulate", (req, res) => {
 app.post("/summary", (req, res) => {
   const { volumes, config } = req.body;
 
+
   const errors = validateInput(volumes, config);
+  console.log("errors:", errors);
   if (errors.length > 0) {
     return res.status(400).json({ errors });
   }

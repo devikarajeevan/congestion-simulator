@@ -8,7 +8,8 @@ export default function ConfigPanel({ config, onChange }) {
       [field]: isNaN(parsed) ? value : parsed,
     });
   }
-
+  // console.log(onChange)
+  console.log("ConfigPanel rendered with config:", config);
   return (
     <div className="config-panel">
       <div className="config-field">

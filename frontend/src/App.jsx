@@ -48,69 +48,62 @@ export default function App() {
   }, []);
 
   // --- CALCULATE HANDLER ---
+async function handleCalculate() {
+  setLoading(true);
+  setError(null);
+  try {
+    const [simRes, sumRes] = await Promise.all([
+      fetch(`${API}/simulate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ volumes, config }),
+      }),
+      fetch(`${API}/summary`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ volumes, config }),
+      }),
+    ]);
 
-  async function handleCalculate() {
-    setLoading(true);
-    setError(null);
-    try {
-      const [simRes, sumRes] = await Promise.all([
-        fetch(`${API}/simulate`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ volumes, config }),
-        }),
-        fetch(`${API}/summary`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ volumes, config }),
-        }),
-      ]);
-      console.log("Simulation response:", simRes);
-      console.log("Summary response:", sumRes);
-
-      if (!simRes.ok) {
-        const err = await simRes.json();
-        throw new Error(err.errors?.join(", ") || "Simulation failed");
-      }
-      if (!sumRes.ok) {
-        const err = await sumRes.json();
-        throw new Error(err.errors?.join(", ") || "Summary failed");
-      }
-
-      const simData = await simRes.json();
-      const sumData = await sumRes.json();
-
-      setHourlyResults(simData.hourlyResults);
-      setSummary(sumData.summary);
-      setShiftResult(null);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    if (!simRes.ok || !sumRes.ok) {
+      setError("Please check your inputs — some values are invalid.");
+      return;
     }
+
+    const simData = await simRes.json();
+    const sumData = await sumRes.json();
+
+    setHourlyResults(simData.hourlyResults);
+    setSummary(sumData.summary);
+    setShiftResult(null);
+  } catch (err) {
+    setError("Something went wrong. Please try again.");
+  } finally {
+    setLoading(false);
   }
+}
 
   // --- SHIFT HANDLER ---
 
-  async function handleShift(shiftPercent) {
-    try {
-      const res = await fetch(`${API}/shift`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ volumes, config, shiftPercent }),
-      });
+async function handleShift(shiftPercent) {
+  try {
+    const res = await fetch(`${API}/shift`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ volumes, config, shiftPercent }),
+    });
 
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.errors?.join(", ") || "Shift failed");
-      }
-
-      const data = await res.json();
-      setShiftResult(data);
-    } catch (err) {
-      setError(err.message);
+    if (!res.ok) {
+      setError("Could not compute the shift. Please check your inputs.");
+      return;
     }
+
+    const data = await res.json();
+    setShiftResult(data);
+  } catch (err) {
+    setError("Something went wrong. Please try again.");
   }
+}
 
   // --- VOLUME CHANGE HANDLER ---
 
@@ -161,6 +154,7 @@ export default function App() {
             onChange={handleVolumeChange}
           />
           {error && <p className="error-message" role="alert">{error}</p>}
+          {console.log("Error state:", error)}
           <div className="calculate-row">
             <button
               onClick={handleCalculate}
