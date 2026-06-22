@@ -36,7 +36,7 @@ Runs on `http://localhost:5173`. Open this in your browser. The backend must be 
 
 **Calculation logic lives entirely in `backend/calculator.js`.** This file has no Express, HTTP, or JSON-handling code — it's pure functions that take volumes and config and return numbers. `server.js` only handles routing, validation, and shaping responses. This separation means the data source could become a database or live feed later without touching the math.
 
-**The shift endpoint is intentionally literal to the spec.** "Move a configurable percentage of volume out of the single most-congested hour into the least-congested hour" is implemented as exactly that: one source hour, one destination hour, found by `Math.max`/`Math.min` on the volumes array. I considered spreading the shift across multiple off-peak hours or shifting from the top N congested hours, since that's closer to how a real incentive program would behave, but the spec is explicit about a single hour pair, and the evaluation criteria calls out "sensible handling of the ambiguous shift design" rather than asking for a more elaborate model. A more realistic version is listed under "What I'd Do With More Time" below.
+**The shift endpoint follows the spec literally.** Volume is moved from the single most-congested hour to the single least-congested hour — one source, one destination, identified by finding the highest and lowest values in the volumes array. Spreading the shift across multiple off-peak hours would be closer to how a real incentive program works, but the spec is explicit about a single hour pair. A multi-hour distribution is noted under "What I'd Do With More Time."
 
 **Moved vehicles are rounded to whole numbers** (`Math.round(volumes[peakIdx] * shiftPercent / 100)`), since fractional vehicles aren't meaningful. This means very small shift percentages on already-low-volume hours can round to zero vehicles moved — the UI reflects this rather than hiding it.
 
@@ -57,7 +57,7 @@ Runs on `http://localhost:5173`. Open this in your browser. The backend must be 
 - Volumes must be non-negative integers; the array must contain exactly 24 values, one per hour, with index 0 representing midnight as specified.
 - When multiple hours tie for peak or quietest, the implementation picks the first occurrence in array order (hour 0 wins ties). This wasn't specified and is a reasonable default.
 - The shift always moves volume from the single peak hour to the single quietest hour, even if they're adjacent or otherwise unusual — no special-casing was added for edge cases like the peak and quiet hour being the same (which can only happen with constant volumes across the day).
-- No authentication, deployment config, or persistence was added, per the assignment's explicit instruction to skip these.
+
 
 ## What I'd Do With More Time
 
@@ -67,7 +67,6 @@ Runs on `http://localhost:5173`. Open this in your browser. The backend must be 
 
 ## Use of AI Tools
 
-## Use of AI Tools
 
 I used Claude (Anthropic) as a coding assistant throughout this project.
 
