@@ -34,6 +34,7 @@ export default function App() {
         const res = await fetch(`${API}/seed`);
         if (!res.ok) throw new Error("Failed to load seed data");
         const data = await res.json();
+        console.log("Seed data loaded:", data);
         setCorridor(data.corridor);
         setConfig(data.config);
         setVolumes(data.volumes);
@@ -64,6 +65,8 @@ export default function App() {
           body: JSON.stringify({ volumes, config }),
         }),
       ]);
+      console.log("Simulation response:", simRes);
+      console.log("Summary response:", sumRes);
 
       if (!simRes.ok) {
         const err = await simRes.json();
