@@ -16,7 +16,6 @@ const seedData = JSON.parse(fs.readFileSync(seedPath, "utf-8"));
 
 function validateInput(volumes, config) {
   const errors = [];
-  console.log("hi")
 
   if (!Array.isArray(volumes) || volumes.length !== 24) {
     errors.push("volumes must be an array of exactly 24 numbers");
@@ -32,11 +31,11 @@ function validateInput(volumes, config) {
     errors.push("config must be an object");
   } else {
     if (typeof config.capacity !== "number" || config.capacity <= 0) {
-      errors.push("Capacity must be a positive number");
+      errors.push("Capacity must be a positive number"); 
     }
     if (typeof config.baseRate !== "number" || config.baseRate <= 0) {
       console.error("Base Rate validation failed:", config.baseRate);
-      console.log("hi")
+      
       errors.push("Base Rate must be a positive number");
     }
     console.error("Validation errors:", errors);
